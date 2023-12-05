@@ -1,0 +1,52 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание колледжа</title>
+</head>
+<body>
+    <h1>Расписание колледжа</h1>
+    <p>Добро пожаловать на страницу расписания колледжа!</p>
+    <p><a href="{{ url_for('login') }}">Войти в админ-панель</a></p>
+    <p>Просмотреть расписание на:
+        <form method="get" action="{{ url_for('index') }}">
+            <input type="date" name="date" required>
+            <button type="submit">Показать</button>
+        </form>
+        {% if selected_day %}
+            ({{ selected_day }})
+        {% endif %}
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>День</th>
+                <th>Время начала</th>
+                <th>Время конца</th>
+                <th>Предмет</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day, sessions in schedule.items() %}
+                {% for session in sessions %}
+                    {% if selected_date == session['date'] %}
+                        <tr>
+                            {% if loop.index == 1 %}
+                                <td rowspan="{{ sessions|length }}">{{ day }}</td>
+                            {% endif %}
+                            <td>{{ session['start_time'] }}</td>
+                            <td>{{ session['end_time'] }}</td>
+                            <td>{{ session['subject'] }}</td>
+                            <td>{{ session['date'] }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
