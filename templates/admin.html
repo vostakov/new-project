@@ -1,0 +1,73 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Административная панель</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Административная панель</h2>
+        <form method="post" action="{{ url_for('admin') }}">
+            <div class="form-group">
+                <label for="start_time">Время начала:</label>
+                <input type="text" class="form-control" id="start_time" name="start_time" placeholder="например, 09:00" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">Предмет:</label>
+                <input type="text" class="form-control" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Дата:</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить предмет</button>
+        </form>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>День недели</th>
+                <th>Номер урока</th>
+                <th>Предмет</th>
+                <th>Время начала</th>
+                <th>Время конца</th>
+                
+                <th>Дата</th>
+                <th>Удалить</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day, sessions in schedule.items() %}
+                {% for session in sessions %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        <td>{{session.n_lesson}}</td>
+                        <td>{{ session['subject'] }}</td>
+                        <td>{{ session['start_time'] }}</td>
+                        <td>{{ session['end_time'] }}</td>
+                        
+                        
+                        
+                        <td>{{ session['date'] }}</td>
+                        <td><a href="{{ url_for('delete', day=day, index=loop.index0) }}">Удалить</a></td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
